@@ -1,1 +1,10 @@
-# chicken
+# Chicken
+
+## What?
+Game. 
+
+## ???
+Metroidvania. 
+
+## ..?
+Perhaps.
