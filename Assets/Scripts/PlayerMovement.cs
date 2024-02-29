@@ -8,14 +8,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 12f;
     public float jumpForce = 2.0f;
-    private bool isGrounded;
-    Rigidbody player;
     public float gravity = -100f;
-
-    void OnCollisionStay()
-    {
-        isGrounded = true;
-    }
+    private Rigidbody player;
+    private bool shouldJump;
 
     void Start()
     {
@@ -29,11 +24,25 @@ public class PlayerMovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         transform.position += moveSpeed * Time.deltaTime * new Vector3(horizontalInput, 0, 0);
 
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            shouldJump = true;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(shouldJump)
         {
             player.AddForce(new Vector3(0, 7.0f, 0) * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
+            shouldJump = false;
         }
+    }
+
+
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(player.position, Vector3.down, 1.1f, 1 << LayerMask.NameToLayer("Ground"));
     }
 
 }
